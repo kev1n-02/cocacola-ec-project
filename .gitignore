@@ -1,0 +1,33 @@
+# ==============================
+# PROYECTO: CocaCola EC Web Replica
+# AUTOR: Kevin Yalama
+# FECHA: 08/04/2026
+# DESCRIPCIÓN:
+# Exclusión de archivos innecesarios y sensibles
+# para el repositorio del proyecto.
+# ==============================
+
+# Python / Django
+backend-django/venv/
+backend-django/__pycache__/
+backend-django/**/*.pyc
+backend-django/db.sqlite3
+
+# Node.js
+backend-node/node_modules/
+backend-node/npm-debug.log
+
+# Angular
+cocacola-frontend/node_modules/
+cocacola-frontend/dist/
+
+# Variables de entorno
+backend-node/.env
+backend-django/.env
+
+# VS Code
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
