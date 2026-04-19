@@ -1,0 +1,37 @@
+<div class="auth-page">
+  <div class="auth-card register-card">
+
+    <div class="brand">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" alt="Coca-Cola">
+    </div>
+
+    <h2>Crear Cuenta</h2>
+    <p class="subtitle">Completa tus datos para registrarte</p>
+
+    <div class="grid">
+      <input [(ngModel)]="nombre" placeholder="Nombre">
+      <input [(ngModel)]="apellido" placeholder="Apellido">
+
+      <input [(ngModel)]="fecha_nacimiento" type="date">
+      <input [(ngModel)]="nacionalidad" placeholder="Nacionalidad">
+
+      <input [(ngModel)]="correo" placeholder="Correo">
+      <input [(ngModel)]="telefono" placeholder="Teléfono">
+
+      <input [(ngModel)]="cedula" placeholder="Cédula">
+      <input [(ngModel)]="password" type="password" placeholder="Contraseña">
+
+      <input class="full" [(ngModel)]="confirm_password" type="password" placeholder="Confirmar contraseña">
+    </div>
+
+    <button class="main-btn" (click)="register()">Registrarse</button>
+
+    <p class="msg">{{ message }}</p>
+
+    <div class="links">
+      <a routerLink="/login">Ir a login</a>
+      <a routerLink="/">Volver</a>
+    </div>
+
+  </div>
+</div>

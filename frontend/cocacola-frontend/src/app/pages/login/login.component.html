@@ -1,0 +1,24 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" alt="Coca-Cola">
+    </div>
+
+    <h2>Iniciar Sesión</h2>
+    <p class="subtitle">Bienvenido de nuevo</p>
+
+    <input [(ngModel)]="username" placeholder="Correo">
+    <input [(ngModel)]="password" type="password" placeholder="Contraseña">
+
+    <button class="main-btn" (click)="login()">Entrar</button>
+
+    <p class="msg">{{ message }}</p>
+
+    <div class="links">
+      <a routerLink="/register">Crear cuenta</a>
+      <a routerLink="/">Volver</a>
+    </div>
+
+  </div>
+</div>

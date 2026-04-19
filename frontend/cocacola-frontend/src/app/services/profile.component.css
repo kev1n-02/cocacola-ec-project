@@ -1,0 +1,180 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 40, 64, 0.14), transparent 28%),
+    linear-gradient(180deg, #0e0f12 0%, #14161b 100%);
+  color: white;
+}
+
+.profile-page {
+  padding: 28px 24px 50px;
+}
+
+.profile-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.profile-badge {
+  display: inline-block;
+  color: #ff6c7b;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.profile-header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+}
+
+.profile-header p {
+  color: #bcc2cc;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.profile-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(16px);
+  margin-bottom: 24px;
+}
+
+.profile-card h2 {
+  margin-bottom: 18px;
+}
+
+.secondary-card h2 {
+  color: #ffd7dc;
+}
+
+.danger-card h2 {
+  color: #ff7d89;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.single-column {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #f2f4f8;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  outline: none;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 1rem;
+}
+
+.form-group input::placeholder {
+  color: #b8bfca;
+}
+
+.form-group input:focus {
+  border-color: rgba(255,40,64,0.6);
+  box-shadow: 0 0 0 3px rgba(255,40,64,0.12);
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.save-btn,
+.delete-btn {
+  border: none;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.28s ease;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #ff2840, #b30f1f);
+  color: white;
+  box-shadow: 0 12px 24px rgba(255,40,64,0.22);
+}
+
+.save-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #8a0f1a, #5c0b12);
+  color: white;
+}
+
+.message {
+  margin-top: 18px;
+  color: #ff9eaa;
+  min-height: 22px;
+}
+
+.danger-card p {
+  color: #c7cdd6;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 18px 14px 40px;
+  }
+
+  .profile-card {
+    padding: 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .save-btn,
+  .delete-btn {
+    width: 100%;
+  }
+}

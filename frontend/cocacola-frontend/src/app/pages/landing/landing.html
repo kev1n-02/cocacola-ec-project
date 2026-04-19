@@ -1,0 +1,67 @@
+<div class="landing-dark">
+  <header class="header">
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" alt="Coca-Cola Logo">
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/">Home</a>
+      <a routerLink="/info">Nosotros</a>
+      <a routerLink="/marcas">Marcas</a>
+      <a routerLink="/discover">Descubre más</a>
+    </nav>
+
+    <div class="menu-box">
+      <button class="menu-btn" [routerLink]="isLoggedIn() ? '/home' : '/login'">
+        {{ isLoggedIn() ? 'LOGIN' : 'Iniciar sesión' }}
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <span class="hero-tag">Coca-Cola Experience</span>
+      <h1>Una experiencia digital <span>más potente</span> para explorar Coca-Cola</h1>
+      <p>
+        Descubre una propuesta visual más moderna, comercial y envolvente para presentar
+        marcas, contenido y acceso a tu sistema de compras.
+      </p>
+
+      <div class="hero-buttons">
+        <button class="btn-primary" [routerLink]="isLoggedIn() ? '/home' : '/login'">Entrar ahora</button>
+        <button class="btn-secondary" routerLink="/marcas">Ver marcas</button>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-top">
+        <span>Premium Experience</span>
+        <span class="status">Live</span>
+      </div>
+
+      <h3>Coca-Cola Universe</h3>
+      <p>
+        Un ecosistema visual premium con navegación moderna, productos, marcas y compras
+        realizadas integradas.
+      </p>
+
+      <div class="hero-card-stats">
+        <div>
+          <strong>3</strong>
+          <span>Marcas</span>
+        </div>
+        <div>
+          <strong>24/7</strong>
+          <span>Acceso</span>
+        </div>
+        <div>
+          <strong>100%</strong>
+          <span>Visual</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

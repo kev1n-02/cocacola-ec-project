@@ -1,0 +1,16 @@
+<div class="products-page">
+
+  <section class="hero">
+    <h1>Our Products</h1>
+    <p>Descubre nuestras marcas más reconocidas</p>
+  </section>
+
+  <section class="grid">
+    <div class="card" *ngFor="let m of marcas">
+      <img [src]="m.imagen" alt="{{ m.nombre }}">
+      <h3>{{ m.nombre }}</h3>
+      <p>{{ m.descripcion }}</p>
+    </div>
+  </section>
+
+</div>

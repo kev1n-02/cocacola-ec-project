@@ -1,0 +1,89 @@
+<div class="marcas-page">
+
+  <div class="top-bar">
+    <a routerLink="/" class="back-home" title="Volver al inicio">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg"
+        alt="Volver al inicio"
+      >
+    </a>
+  </div>
+
+  <section class="hero">
+    <span class="hero-badge">MARCAS</span>
+    <h1>Nuestras marcas más icónicas</h1>
+    <p>
+      Explora Coca-Cola, Sprite y Fanta en una presentación más visual, elegante
+      y pensada para destacar la identidad de cada una.
+    </p>
+  </section>
+
+  <section class="brands-scroll">
+
+    <article class="brand-card coca">
+      <div class="image">
+        <img
+          src="https://wallpapers.com/images/hd/coca-cola-a0ndw2wk6ni9y99k.jpg"
+          alt="Coca-Cola"
+        >
+      </div>
+
+      <div class="content">
+        <h2>Coca-Cola</h2>
+        <p>
+          Coca-Cola es una de las marcas más reconocidas a nivel mundial,
+          destacando por su sabor original y su capacidad de conectar
+          emocionalmente con millones de personas.
+        </p>
+
+        <button [routerLink]="['/home']" [queryParams]="{ marca: 'Coca-Cola' }">
+          Ver más
+        </button>
+      </div>
+    </article>
+
+    <article class="brand-card sprite">
+      <div class="image">
+        <img
+          src="https://www.coca-cola.com/content/dam/onexp/uy/es/brands/sprite/es_sprite_header01_desktop_1440x810_v1.jpg"
+          alt="Sprite"
+        >
+      </div>
+
+      <div class="content">
+        <h2>Sprite</h2>
+        <p>
+          Sprite se caracteriza por su frescura intensa y su perfil limpio
+          de limón y lima, ideal para quienes buscan una bebida ligera y refrescante.
+        </p>
+
+        <button [routerLink]="['/home']" [queryParams]="{ marca: 'Sprite' }">
+          Ver más
+        </button>
+      </div>
+    </article>
+
+    <article class="brand-card fanta">
+      <div class="image">
+        <img
+          src="https://www.shutterstock.com/image-photo/vibrant-orange-fanta-glass-bottle-260nw-2751415695.jpg"
+          alt="Fanta"
+        >
+      </div>
+
+      <div class="content">
+        <h2>Fanta</h2>
+        <p>
+          Fanta destaca por su sabor frutal, su estilo vibrante y su personalidad
+          divertida, convirtiéndose en una marca moderna y llena de energía.
+        </p>
+
+        <button [routerLink]="['/home']" [queryParams]="{ marca: 'Fanta' }">
+          Ver más
+        </button>
+      </div>
+    </article>
+
+  </section>
+
+</div>

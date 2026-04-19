@@ -1,0 +1,148 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at top right, rgba(255,40,64,0.18), transparent 24%),
+    linear-gradient(180deg, #0f1013 0%, #15171c 100%);
+  padding: 24px;
+}
+
+.auth-card {
+  width: 560px;
+  max-width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px;
+  padding: 38px 34px;
+  box-shadow: 0 18px 36px rgba(0,0,0,0.28);
+  text-align: center;
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  margin-bottom: 14px;
+}
+
+.brand img {
+  width: 145px;
+}
+
+h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.subtitle {
+  margin: 10px 0 24px;
+  color: #bfc5cf;
+  font-size: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-grid input,
+.form-grid select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  outline: none;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 1rem;
+}
+
+input,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 16px;
+  margin: 10px 0;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  outline: none;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #b8bfca;
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(255,40,64,0.6);
+  box-shadow: 0 0 0 3px rgba(255,40,64,0.12);
+}
+
+.main-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 15px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff2840, #b30f1f);
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(255,40,64,0.22);
+  transition: 0.28s ease;
+}
+
+.main-btn:hover {
+  transform: translateY(-2px);
+}
+
+.msg {
+  min-height: 22px;
+  margin-top: 14px;
+  color: #ff8b98;
+  font-size: 0.95rem;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  gap: 12px;
+}
+
+.links a {
+  color: #ff9eaa;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .auth-card {
+    width: 100%;
+    padding: 32px 22px;
+    border-radius: 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+  }
+
+  .brand img {
+    width: 125px;
+  }
+}

@@ -1,0 +1,119 @@
+<app-navbar></app-navbar>
+
+<div class="home-page">
+  <section class="hero-home">
+    <div class="hero-content">
+      <span class="hero-badge">Bienvenido, {{ userName }}</span>
+      <h1>Explora el catálogo Coca-Cola</h1>
+      <p>
+        Descubre categorías reales, promociones y productos destacados conectados
+        directamente a la base de datos del sistema.
+      </p>
+
+      <div class="hero-actions">
+        <button class="primary-btn" (click)="irCatalogo()">Comprar ahora</button>
+      </div>
+    </div>
+  </section>
+
+ <section class="brands-section">
+  <div class="section-title">
+    <span>Marcas</span>
+    <h2>Nuestras marcas principales</h2>
+    <p>Explora las bebidas más icónicas del mundo Coca-Cola.</p>
+  </div>
+
+  <div class="brands-grid">
+    <div class="brand-card" *ngFor="let marca of marcas">
+      <img [src]="marca.imagen" [alt]="marca.nombre">
+      <div class="brand-info">
+        <h3>{{ marca.nombre }}</h3>
+        <p>{{ marca.descripcion }}</p>
+        <div class="product-bottom">
+          <button (click)="seleccionarMarca(marca.nombre)">Ver productos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section class="events-section" id="eventos">
+  <div class="section-title">
+    <span>Eventos</span>
+    <h2>Experiencias que conectan</h2>
+    <p>
+      Coca-Cola también vive a través de eventos, música, deporte y campañas
+      que generan conexión con las personas.
+    </p>
+  </div>
+
+  <div class="events-grid">
+    <div class="event-card" *ngFor="let evento of eventos">
+      <img [src]="evento.imagen" [alt]="evento.titulo">
+
+      <div class="event-info">
+        <h3>{{ evento.titulo }}</h3>
+        <p>{{ evento.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section class="catalog-section" id="catalogo">
+    <div class="section-title">
+      <span>Catálogo</span>
+      <h2>Bebidas y promociones</h2>
+      <p>Filtra por categorías reales registradas en la base de datos.</p>
+    </div>
+
+    <div class="filters">
+      <button (click)="filtrarCategoria('todos')" [class.active]="categoriaActiva === 'todos'">Todos</button>
+
+      <button
+        *ngFor="let c of categorias"
+        (click)="filtrarCategoria(c.nombre)"
+        [class.active]="categoriaActiva === c.nombre">
+        {{ c.nombre }}
+      </button>
+
+      <button (click)="verPromociones()" [class.active]="categoriaActiva === 'promociones'">
+        Promociones
+      </button>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let p of productos">
+        <img [src]="p.imagen" [alt]="p.nombre">
+
+        <div class="product-info">
+          <span class="category-chip">{{ p.categoria_nombre }}</span>
+          <h3>{{ p.nombre }}</h3>
+          <p>{{ p.descripcion }}</p>
+
+          <div class="product-bottom">
+            <span>${{ p.precio }}</span>
+            <button (click)="agregarAlCarrito(p)">Comprar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="eco-section">
+    <div class="section-title">
+      <span>Ecología</span>
+      <h2>Compromiso con el entorno</h2>
+      <p>Una visión de marca más responsable, sostenible y alineada al futuro.</p>
+    </div>
+
+    <div class="eco-grid">
+      <div class="eco-card" *ngFor="let item of ecologia">
+        <img [src]="item.imagen" [alt]="item.titulo">
+        <div class="eco-info">
+          <h3>{{ item.titulo }}</h3>
+          <p>{{ item.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

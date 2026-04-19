@@ -1,0 +1,60 @@
+<header class="private-header">
+  <div class="brand" routerLink="/home">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg"
+      alt="Coca-Cola"
+    >
+  </div>
+
+  <nav class="private-nav">
+    <a routerLink="/home" routerLinkActive="active">Inicio</a>
+
+    <div class="nav-dropdown" (click)="$event.stopPropagation()">
+      <button class="nav-btn" type="button" (click)="toggleCatalogMenu($event)">
+        Catálogo
+      </button>
+
+      <div class="dropdown-menu" [class.show]="catalogMenuOpen">
+        <button type="button" (click)="irCategoria('Carbonatadas')">Carbonatadas</button>
+        <button type="button" (click)="irCategoria('Agua')">Agua</button>
+        <button type="button" (click)="irCategoria('Hidratantes')">Hidratantes</button>
+        <button type="button" (click)="irCategoria('Té')">Té</button>
+        <button type="button" (click)="irPromociones()">Promociones</button>
+      </div>
+    </div>
+
+    <div class="nav-dropdown" (click)="$event.stopPropagation()">
+      <button class="nav-btn" type="button" (click)="toggleEventsMenu($event)">
+        Eventos
+      </button>
+
+      <div class="dropdown-menu" [class.show]="eventsMenuOpen">
+        <button type="button" (click)="irEvento('mundial')">Mundial FIFA</button>
+        <button type="button" (click)="irEvento('music')">Coke Music</button>
+        <button type="button" (click)="irEvento('campanias')">Campañas Coca-Cola</button>
+      </div>
+    </div>
+
+    <a routerLink="/cart" routerLinkActive="active" class="cart-link">
+      🛒 <span class="cart-count">{{ cartCount }}</span>
+    </a>
+  </nav>
+
+  <div class="user-box" (click)="$event.stopPropagation()">
+    <button class="menu-btn" type="button" (click)="toggleUserMenu($event)">
+      {{ userName }}
+    </button>
+
+    <div class="dropdown-menu user-dropdown" [class.show]="userMenuOpen">
+      <div class="dropdown-user">
+        <h4>{{ userName }}</h4>
+        <p>Tu espacio personal</p>
+      </div>
+
+      <a routerLink="/profile" (click)="closeMenus()">Editar perfil</a>
+      <a routerLink="/my-orders" (click)="closeMenus()">Mis pedidos</a>
+      <a routerLink="/cart" (click)="closeMenus()">Ver carrito</a>
+      <button type="button" class="logout-link" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+</header>

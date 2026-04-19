@@ -1,0 +1,426 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 40, 64, 0.14), transparent 28%),
+    linear-gradient(180deg, #0e0f12 0%, #14161b 100%);
+  color: white;
+}
+
+.home-page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 26px 22px 50px;
+}
+
+/* HERO */
+.hero-home {
+  min-height: 420px;
+  border-radius: 30px;
+  padding: 48px;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(rgba(10,10,10,0.55), rgba(10,10,10,0.7)),
+    url('https://img3.wallspic.com/crops/2/4/6/9/19642/19642-la_compaa_coca_cola-1366x768.jpg')
+    center/cover no-repeat;
+  box-shadow: 0 18px 38px rgba(0,0,0,0.28);
+  margin-bottom: 34px;
+}
+
+.hero-content {
+  max-width: 700px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.hero-content h1 {
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+
+.hero-content p {
+  color: #d3d8e0;
+  line-height: 1.8;
+  font-size: 1.08rem;
+  margin-bottom: 24px;
+  max-width: 620px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* TITLES */
+.section-title {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.section-title span {
+  display: inline-block;
+  color: #ff6c7b;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.section-title h2 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.section-title p {
+  color: #bcc2cc;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* FEATURED */
+.featured-section,
+.catalog-section,
+.account-section,
+.eco-section {
+  margin-bottom: 38px;
+}
+
+.featured-grid,
+.products-grid,
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.featured-card,
+.product-card,
+.eco-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+  transition: 0.3s ease;
+  backdrop-filter: blur(14px);
+}
+
+.featured-card:hover,
+.product-card:hover,
+.eco-card:hover {
+  transform: translateY(-8px);
+}
+
+.featured-card img,
+.product-card img,
+.eco-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.featured-info,
+.product-info,
+.eco-info {
+  padding: 24px;
+}
+
+.featured-info h3,
+.product-info h3,
+.eco-info h3 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.featured-info p,
+.product-info p,
+.eco-info p {
+  color: #c5cbd4;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.featured-bottom,
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.featured-bottom span,
+.product-bottom span {
+  color: #ff5666;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.featured-bottom button,
+.product-bottom button {
+  border: none;
+  background: linear-gradient(135deg, #ff2840, #b30f1f);
+  color: white;
+  padding: 11px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.28s ease;
+}
+
+.featured-bottom button:hover,
+.product-bottom button:hover {
+  transform: translateY(-2px);
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.filters button {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  padding: 11px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.28s ease;
+}
+
+.filters button:hover,
+.filters button.active {
+  background: linear-gradient(135deg, #ff2840, #b30f1f);
+  border-color: transparent;
+}
+
+.category-chip {
+  display: inline-block;
+  background: rgba(255,255,255,0.08);
+  color: #ff9fab;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+/* ACCOUNT */
+.account-panel {
+  max-width: 920px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(16px);
+}
+
+.account-panel h3 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+
+.account-panel p {
+  color: #c4cad3;
+  line-height: 1.8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .featured-grid,
+  .products-grid,
+  .eco-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding: 18px 14px 40px;
+  }
+
+  .hero-home {
+    padding: 30px 22px;
+    min-height: 340px;
+  }
+
+  .featured-grid,
+  .products-grid,
+  .eco-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title h2 {
+    font-size: 2rem;
+  }
+
+  .featured-card img,
+  .product-card img,
+  .eco-card img {
+    height: 220px;
+  }
+}
+
+/* EVENTS */
+.events-section {
+  margin-bottom: 38px;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.event-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+  transition: 0.3s ease;
+  backdrop-filter: blur(14px);
+}
+
+.event-card:hover {
+  transform: translateY(-8px);
+}
+
+.event-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.event-info {
+  padding: 24px;
+}
+
+.event-info h3 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.event-info p {
+  color: #c5cbd4;
+  line-height: 1.7;
+}
+
+@media (max-width: 1100px) {
+  .events-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-card img {
+    height: 220px;
+  }
+}
+/* MARCAS */
+.brands-section {
+  margin-bottom: 40px;
+}
+
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.brand-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border-radius: 24px;
+  overflow: hidden;
+  transition: 0.3s;
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.brand-card:hover {
+  transform: translateY(-6px);
+}
+
+.brand-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.brand-info {
+  padding: 20px;
+}
+
+.brand-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.brand-info p {
+  color: #c5cbd4;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .brands-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ALINEAR TARJETAS Y BOTONES */
+.brand-card,
+.event-card,
+.product-card,
+.eco-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.brand-info,
+.event-info,
+.product-info,
+.eco-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-info p,
+.brand-info p,
+.event-info p,
+.eco-info p {
+  flex-grow: 1;
+}
+
+.product-bottom {
+  margin-top: auto;
+}
+
+/* OPCIONAL: mejor click visual en marcas */
+.brand-card {
+  cursor: pointer;
+}

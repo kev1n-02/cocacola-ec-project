@@ -1,0 +1,98 @@
+<app-navbar></app-navbar>
+
+<div class="profile-page">
+  <div class="profile-container">
+    <div class="profile-header">
+      <span class="profile-badge">TU CUENTA</span>
+      <h1>Editar perfil</h1>
+      <p>Actualiza tu información personal, cambia tu contraseña o elimina tu cuenta.</p>
+    </div>
+
+    <div *ngIf="loading" class="profile-card">
+      <p>Cargando perfil...</p>
+    </div>
+
+    <div *ngIf="!loading" class="profile-card">
+      <h2>Datos personales</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombres</label>
+          <input [(ngModel)]="form.nombre" placeholder="Ingresa tus nombres">
+        </div>
+
+        <div class="form-group">
+          <label>Apellidos</label>
+          <input [(ngModel)]="form.apellido" placeholder="Ingresa tus apellidos">
+        </div>
+
+        <div class="form-group">
+          <label>Fecha de nacimiento</label>
+          <input [(ngModel)]="form.fecha_nacimiento" type="date">
+        </div>
+
+        <div class="form-group">
+          <label>Nacionalidad</label>
+          <input [(ngModel)]="form.nacionalidad" placeholder="Ingresa tu nacionalidad">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input [(ngModel)]="form.telefono" placeholder="Ingresa tu teléfono">
+        </div>
+
+        <div class="form-group">
+          <label>Cédula</label>
+          <input [(ngModel)]="form.cedula" placeholder="Ingresa tu cédula">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Correo</label>
+          <input [(ngModel)]="form.correo" type="email" placeholder="Ingresa tu correo">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="save-btn" (click)="guardarCambios()">Guardar cambios</button>
+      </div>
+
+      <p class="message">{{ message }}</p>
+    </div>
+
+    <div *ngIf="!loading" class="profile-card secondary-card">
+      <h2>Cambiar contraseña</h2>
+
+      <div class="form-grid single-column">
+        <div class="form-group">
+          <label>Contraseña actual</label>
+          <input [(ngModel)]="passwordForm.current_password" type="password" placeholder="Contraseña actual">
+        </div>
+
+        <div class="form-group">
+          <label>Nueva contraseña</label>
+          <input [(ngModel)]="passwordForm.new_password" type="password" placeholder="Nueva contraseña">
+        </div>
+
+        <div class="form-group">
+          <label>Confirmar nueva contraseña</label>
+          <input [(ngModel)]="passwordForm.confirm_password" type="password" placeholder="Confirmar contraseña">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="save-btn" (click)="cambiarPassword()">Actualizar contraseña</button>
+      </div>
+
+      <p class="message">{{ passwordMessage }}</p>
+    </div>
+
+    <div *ngIf="!loading" class="profile-card danger-card">
+      <h2>Eliminar cuenta</h2>
+      <p>Esta acción eliminará tu cuenta del sistema.</p>
+
+      <div class="actions">
+        <button class="delete-btn" (click)="eliminarCuenta()">Eliminar cuenta</button>
+      </div>
+    </div>
+  </div>
+</div>

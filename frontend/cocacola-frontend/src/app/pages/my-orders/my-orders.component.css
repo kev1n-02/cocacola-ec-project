@@ -1,0 +1,113 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 40, 64, 0.14), transparent 28%),
+    linear-gradient(180deg, #0e0f12 0%, #14161b 100%);
+  color: white;
+}
+
+.orders-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 50px;
+}
+
+.orders-container h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.orders-container > p {
+  color: #bfc5cf;
+  margin-bottom: 28px;
+  font-size: 1.05rem;
+}
+
+.orders-container p {
+  color: #c6ccd6;
+}
+
+.order-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px;
+  padding: 24px;
+  margin-bottom: 22px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.24);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 34px rgba(0,0,0,0.3);
+}
+
+.order-card h3 {
+  font-size: 1.7rem;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.order-card p {
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.order-card strong {
+  color: #ff6a79;
+}
+
+.detalles {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.detalle-item {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: #e9edf4;
+}
+
+.order-card button {
+  margin-top: 18px;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff2840, #b30f1f);
+  color: white;
+  cursor: pointer;
+  font-weight: 800;
+  transition: 0.25s ease;
+  box-shadow: 0 12px 24px rgba(255, 40, 64, 0.22);
+}
+
+.order-card button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .orders-container {
+    padding: 20px 16px 40px;
+  }
+
+  .orders-container h1 {
+    font-size: 2.3rem;
+  }
+
+  .detalle-item {
+    grid-template-columns: 1fr;
+  }
+
+  .order-card h3 {
+    font-size: 1.45rem;
+  }
+}

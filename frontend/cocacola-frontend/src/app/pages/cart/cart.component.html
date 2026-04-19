@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+
+<div class="cart-container">
+  <h1>Carrito de compras</h1>
+  <p>Revisa productos y completa tus datos de facturación.</p>
+
+  <div *ngIf="items.length === 0" class="empty-cart">
+    <p>Tu carrito está vacío.</p>
+  </div>
+
+  <div *ngIf="items.length > 0">
+    <div class="cart-card" *ngFor="let item of items; let i = index">
+      <img [src]="item.imagen" [alt]="item.nombre">
+
+      <div class="cart-info">
+        <h3>{{ item.nombre }}</h3>
+        <p>{{ item.descripcion }}</p>
+        <p><strong>Precio unitario:</strong> ${{ item.precio }}</p>
+        <p><strong>Cantidad:</strong> {{ item.cantidad }}</p>
+        <p><strong>Subtotal:</strong> ${{ item.precio * item.cantidad }}</p>
+
+        <div class="quantity-controls">
+          <button (click)="decrease(i)">-</button>
+          <span>{{ item.cantidad }}</span>
+          <button (click)="increase(i)">+</button>
+        </div>
+
+        <button class="remove-btn" (click)="remove(i)">Eliminar</button>
+      </div>
+    </div>
+
+    <div class="billing-card">
+      <h2>Datos de facturación</h2>
+
+      <input [(ngModel)]="nombresFacturacion" placeholder="Nombres completos">
+      <input [(ngModel)]="direccionFacturacion" placeholder="Dirección">
+      <input [(ngModel)]="cedulaFacturacion" placeholder="Número de cédula">
+
+      <div class="billing-summary">
+        <p><strong>Subtotal:</strong> ${{ subtotal().toFixed(2) }}</p>
+        <p><strong>IVA 15%:</strong> ${{ iva().toFixed(2) }}</p>
+        <p><strong>Total final:</strong> ${{ total().toFixed(2) }}</p>
+      </div>
+
+      <div class="cart-actions">
+        <button (click)="clear()">Vaciar carrito</button>
+        <button (click)="comprar()">Confirmar compra</button>
+      </div>
+    </div>
+  </div>
+</div>
