@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16
+    container_name: cocacola_db
+    restart: always
+    environment:
+      POSTGRES_DB: cocacola_ec_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend-django
+    container_name: cocacola_backend
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend-django:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend/cocacola-frontend
+    container_name: cocacola_frontend
+    restart: always
+    volumes:
+      - ./frontend/cocacola-frontend:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

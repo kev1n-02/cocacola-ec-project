@@ -2,113 +2,176 @@
 
 <div class="home-page">
   <section class="hero-home">
+    <div class="hero-overlay"></div>
+
     <div class="hero-content">
       <span class="hero-badge">Bienvenido, {{ userName }}</span>
-      <h1>Explora el catálogo Coca-Cola</h1>
+
+      <h1>
+        Explora el universo
+        <span>Coca-Cola</span>
+      </h1>
+
       <p>
-        Descubre categorías reales, promociones y productos destacados conectados
-        directamente a la base de datos del sistema.
+        Descubre categorías reales, promociones y productos destacados en una
+        experiencia visual más moderna, inmersiva y conectada a tu sistema.
       </p>
 
       <div class="hero-actions">
-        <button class="primary-btn" (click)="irCatalogo()">Comprar ahora</button>
+        <button type="button" class="primary-btn" (click)="irCatalogo()">
+          Comprar ahora
+        </button>
+
+        <button type="button" class="secondary-btn" (click)="filtrarPorMarca('Coca-Cola')">
+          Explorar marcas
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <strong>{{ categorias.length || 0 }}</strong>
+          <span>Categorías</span>
+        </div>
+
+        <div class="stat-card">
+          <strong>{{ productos.length || 0 }}</strong>
+          <span>Productos</span>
+        </div>
+
+        <div class="stat-card">
+          <strong>24/7</strong>
+          <span>Experiencia</span>
+        </div>
       </div>
     </div>
   </section>
 
- <section class="brands-section">
-  <div class="section-title">
-    <span>Marcas</span>
-    <h2>Nuestras marcas principales</h2>
-    <p>Explora las bebidas más icónicas del mundo Coca-Cola.</p>
-  </div>
-
-  <div class="brands-grid">
-    <div class="brand-card" *ngFor="let marca of marcas">
-      <img [src]="marca.imagen" [alt]="marca.nombre">
-      <div class="brand-info">
-        <h3>{{ marca.nombre }}</h3>
-        <p>{{ marca.descripcion }}</p>
-        <div class="product-bottom">
-          <button (click)="seleccionarMarca(marca.nombre)">Ver productos</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <section class="events-section" id="eventos">
-  <div class="section-title">
-    <span>Eventos</span>
-    <h2>Experiencias que conectan</h2>
-    <p>
-      Coca-Cola también vive a través de eventos, música, deporte y campañas
-      que generan conexión con las personas.
-    </p>
-  </div>
-
-  <div class="events-grid">
-    <div class="event-card" *ngFor="let evento of eventos">
-      <img [src]="evento.imagen" [alt]="evento.titulo">
-
-      <div class="event-info">
-        <h3>{{ evento.titulo }}</h3>
-        <p>{{ evento.descripcion }}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <section class="catalog-section" id="catalogo">
+  <section class="brands-section section-box">
     <div class="section-title">
-      <span>Catálogo</span>
-      <h2>Bebidas y promociones</h2>
-      <p>Filtra por categorías reales registradas en la base de datos.</p>
+      <span>Marcas</span>
+      <h2>Nuestras marcas principales</h2>
+      <p>
+        Explora las bebidas más icónicas del universo Coca-Cola, con identidad,
+        frescura y una experiencia visual más atractiva.
+      </p>
     </div>
 
-    <div class="filters">
-      <button (click)="filtrarCategoria('todos')" [class.active]="categoriaActiva === 'todos'">Todos</button>
+    <div class="brands-grid">
+      <div
+        class="brand-card"
+        *ngFor="let marca of marcas"
+        [ngClass]="getClaseMarca(marca.nombre)"
+        (click)="abrirDetalleMarca(marca)">
+        <div class="image-wrap">
+          <img [src]="marca.slides[0].imagen" [alt]="marca.nombre">
+          <div class="image-shade"></div>
+        </div>
 
-      <button
-        *ngFor="let c of categorias"
-        (click)="filtrarCategoria(c.nombre)"
-        [class.active]="categoriaActiva === c.nombre">
-        {{ c.nombre }}
-      </button>
-
-      <button (click)="verPromociones()" [class.active]="categoriaActiva === 'promociones'">
-        Promociones
-      </button>
-    </div>
-
-    <div class="products-grid">
-      <div class="product-card" *ngFor="let p of productos">
-        <img [src]="p.imagen" [alt]="p.nombre">
-
-        <div class="product-info">
-          <span class="category-chip">{{ p.categoria_nombre }}</span>
-          <h3>{{ p.nombre }}</h3>
-          <p>{{ p.descripcion }}</p>
+        <div class="brand-info">
+          <h3>{{ marca.nombre }}</h3>
+          <p>{{ marca.descripcion }}</p>
 
           <div class="product-bottom">
-            <span>${{ p.precio }}</span>
-            <button (click)="agregarAlCarrito(p)">Comprar</button>
+            <button type="button" (click)="seleccionarMarca(marca.nombre); $event.stopPropagation()">
+              Ver productos
+            </button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="eco-section">
+  <section class="events-section section-box" id="eventos">
+    <div class="section-title">
+      <span>Eventos</span>
+      <h2>Experiencias que conectan</h2>
+      <p>
+        Coca-Cola también vive a través de eventos, música, deporte y campañas
+        capaces de generar recuerdos, emoción y conexión con las personas.
+      </p>
+    </div>
+
+    <div class="events-grid">
+      <div
+        class="event-card"
+        *ngFor="let evento of eventos"
+        [ngClass]="getClaseEvento(evento.titulo)"
+        (click)="abrirDetalleEvento(evento)">
+        <div class="image-wrap">
+          <img [src]="evento.slides[0].imagen" [alt]="evento.titulo">
+          <div class="image-shade"></div>
+        </div>
+
+        <div class="event-info">
+          <h3>{{ evento.titulo }}</h3>
+          <p>{{ evento.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog-section section-box" id="catalogo">
+    <div class="section-title">
+      <span>Catálogo</span>
+      <h2>Bebidas y promociones</h2>
+      <p>
+        Filtra por categorías reales registradas en la base de datos y descubre
+        una experiencia de compra más visual y organizada.
+      </p>
+    </div>
+
+    <div class="filters">
+      <button
+        type="button"
+        (click)="filtrarCategoria('todos')"
+        [class.active]="esFiltroActivo('todos')">
+        Todos
+      </button>
+
+      <ng-container *ngFor="let c of categorias">
+        <button
+          type="button"
+          *ngIf="c.nombre !== 'Promociones'"
+          (click)="filtrarCategoria(c.nombre)"
+          [class.active]="esFiltroActivo(c.nombre)">
+          {{ c.nombre }}
+        </button>
+      </ng-container>
+
+      <button
+        type="button"
+        (click)="verPromociones()"
+        [class.active]="esFiltroActivo('promociones')">
+        Promociones
+      </button>
+    </div>
+
+    <div class="products-grid">
+      <app-product-card
+        *ngFor="let p of productos"
+        [product]="p"
+        (buy)="agregarAlCarrito($event)">
+      </app-product-card>
+    </div>
+  </section>
+
+  <section class="eco-section section-box eco-highlight">
     <div class="section-title">
       <span>Ecología</span>
       <h2>Compromiso con el entorno</h2>
-      <p>Una visión de marca más responsable, sostenible y alineada al futuro.</p>
+      <p>
+        Una visión de marca más responsable, sostenible y alineada con el futuro,
+        integrando diseño, conciencia y experiencia.
+      </p>
     </div>
 
     <div class="eco-grid">
       <div class="eco-card" *ngFor="let item of ecologia">
-        <img [src]="item.imagen" [alt]="item.titulo">
+        <div class="image-wrap">
+          <img [src]="item.imagen" [alt]="item.titulo">
+          <div class="image-shade"></div>
+        </div>
+
         <div class="eco-info">
           <h3>{{ item.titulo }}</h3>
           <p>{{ item.descripcion }}</p>
@@ -116,4 +179,86 @@
       </div>
     </div>
   </section>
+</div>
+
+<div class="detail-overlay" *ngIf="detalleAbierto" (click)="cerrarDetalle()">
+  <div
+    class="detail-modal slider-modal"
+    [ngClass]="getClaseDetalle()"
+    (click)="$event.stopPropagation()">
+
+    <button class="close-detail" type="button" (click)="cerrarDetalle()">×</button>
+
+    <div class="slider-header">
+      <span class="slider-badge">{{ getTituloDetalle() }}</span>
+      <h2>{{ slideActual?.titulo || getTituloDetalle() }}</h2>
+    </div>
+
+    <div class="slider-stage">
+      <button class="nav-arrow left" type="button" (click)="anteriorSlide()">‹</button>
+
+      <div class="slider-main-image" [style.background-image]="'url(' + slideActual?.imagen + ')'">
+        <div class="slider-overlay"></div>
+
+        <div class="slide-content" *ngIf="slideActual?.texto">
+          <div class="slide-text-box">
+            <p>{{ slideActual.texto }}</p>
+          </div>
+        </div>
+
+        <div class="slide-content boxes-content" *ngIf="slideActual?.cajas?.length">
+          <div class="slide-box" *ngFor="let caja of slideActual.cajas">
+            {{ caja }}
+          </div>
+        </div>
+      </div>
+
+      <button class="nav-arrow right" type="button" (click)="siguienteSlide()">›</button>
+    </div>
+
+    <div class="slider-dots">
+      <button
+        type="button"
+        class="dot"
+        *ngFor="let slide of detalleAbierto.slides; let i = index"
+        [class.active]="slideActivo === i"
+        (click)="irSlide(i)">
+      </button>
+    </div>
+
+    <div class="slider-bottom-sections">
+      <div class="story-card" *ngFor="let seccion of detalleAbierto.secciones">
+        <div class="story-image">
+          <img [src]="seccion.imagen" [alt]="seccion.titulo">
+        </div>
+        <div class="story-info">
+          <h3>{{ seccion.titulo }}</h3>
+          <p>{{ seccion.texto }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-footer">
+      <div class="quote-box">
+        {{ detalleAbierto.frase }}
+      </div>
+
+      <button
+        *ngIf="tipoDetalle === 'marca'"
+        type="button"
+        class="brand-action-btn"
+        (click)="seleccionarMarca(detalleAbierto.nombre); cerrarDetalle()">
+        Ver productos
+      </button>
+
+      <a
+        *ngIf="detalleAbierto.spotifyUrl"
+        class="spotify-btn"
+        [href]="detalleAbierto.spotifyUrl"
+        target="_blank"
+        rel="noopener noreferrer">
+        Escuchar en Spotify
+      </a>
+    </div>
+  </div>
 </div>

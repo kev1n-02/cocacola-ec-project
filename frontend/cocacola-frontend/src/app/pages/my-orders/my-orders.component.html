@@ -1,35 +1,122 @@
 <app-navbar></app-navbar>
 
-<div class="orders-container">
-  <h1>Historial de pedidos</h1>
-  <p>Consulta aquí tus compras realizadas.</p>
+<div class="orders-page">
+  <div class="orders-shell">
+    <section class="orders-hero">
+      <span class="hero-badge">Historial Coca-Cola</span>
+      <h1>Mis pedidos</h1>
+      <p>
+        Consulta tus compras realizadas, revisa el detalle de cada pedido y
+        mantén un seguimiento más claro de tu actividad dentro de la plataforma.
+      </p>
+    </section>
 
-  <div *ngIf="cargando">
-    <p>Cargando pedidos...</p>
-  </div>
+    <div *ngIf="cargando" class="state-card">
+      <div class="state-icon">⏳</div>
+      <h2>Cargando pedidos...</h2>
+      <p>Estamos consultando tu historial de compras.</p>
+    </div>
 
-  <div *ngIf="!cargando && pedidos.length === 0">
-    <p>No tienes compras registradas todavía.</p>
-  </div>
+    <div *ngIf="!cargando && pedidos.length === 0" class="state-card">
+      <div class="state-icon">📦</div>
+      <h2>Aún no tienes pedidos registrados</h2>
+      <p>
+        Cuando realices una compra, aquí podrás revisar todo tu historial
+        de pedidos de forma organizada.
+      </p>
+    </div>
 
-  <div class="order-card" *ngFor="let pedido of pedidos">
-    <h3>Pedido #{{ pedido.id }}</h3>
-    <p><strong>Fecha:</strong> {{ pedido.fecha | date:'short' }}</p>
-    <p><strong>Nombres:</strong> {{ pedido.nombres_facturacion }}</p>
-    <p><strong>Dirección:</strong> {{ pedido.direccion_facturacion }}</p>
-    <p><strong>Cédula:</strong> {{ pedido.cedula_facturacion }}</p>
-    <p><strong>Subtotal:</strong> ${{ pedido.subtotal }}</p>
-    <p><strong>IVA:</strong> ${{ pedido.iva }}</p>
-    <p><strong>Total:</strong> ${{ pedido.total }}</p>
-    <p><strong>Estado:</strong> {{ pedido.estado }}</p>
+    <div *ngIf="!cargando && pedidos.length > 0" class="orders-list">
+      <article class="order-card" *ngFor="let pedido of pedidos">
+        <div class="order-header">
+          <div>
+            <span class="order-label">Pedido</span>
+            <h2>#{{ pedido.id }}</h2>
+          </div>
 
-    <div class="detalles">
-      <div class="detalle-item" *ngFor="let d of pedido.detalles">
-        <span>{{ d.producto_nombre }}</span>
-        <span>Cantidad: {{ d.cantidad }}</span>
-        <span>Precio: ${{ d.precio }}</span>
-        <span>Subtotal: ${{ d.subtotal }}</span>
-      </div>
+          <div class="status-box">
+            <span class="status-label">Estado</span>
+            <span class="status-pill">{{ pedido.estado }}</span>
+          </div>
+        </div>
+
+        <div class="order-top-grid">
+          <div class="info-panel">
+            <h3>Información general</h3>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span>Fecha</span>
+                <strong>{{ pedido.fecha | date:'short' }}</strong>
+              </div>
+
+              <div class="info-row">
+                <span>Nombres</span>
+                <strong>{{ pedido.nombres_facturacion }}</strong>
+              </div>
+
+              <div class="info-row">
+                <span>Dirección</span>
+                <strong>{{ pedido.direccion_facturacion }}</strong>
+              </div>
+
+              <div class="info-row">
+                <span>Cédula</span>
+                <strong>{{ pedido.cedula_facturacion }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="total-panel">
+            <h3>Resumen de pago</h3>
+
+            <div class="summary-list">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>${{ pedido.subtotal }}</strong>
+              </div>
+
+              <div class="summary-row">
+                <span>IVA</span>
+                <strong>${{ pedido.iva }}</strong>
+              </div>
+
+              <div class="summary-row total-row">
+                <span>Total</span>
+                <strong>${{ pedido.total }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="details-section">
+          <div class="details-head">
+            <h3>Detalle del pedido</h3>
+            <span>{{ pedido.detalles.length }} producto(s)</span>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-card" *ngFor="let d of pedido.detalles">
+              <div class="detail-main">
+                <h4>{{ d.producto_nombre }}</h4>
+                <span class="detail-chip">Cantidad: {{ d.cantidad }}</span>
+              </div>
+
+              <div class="detail-prices">
+                <div class="price-box">
+                  <span>Precio</span>
+                  <strong>${{ d.precio }}</strong>
+                </div>
+
+                <div class="price-box">
+                  <span>Subtotal</span>
+                  <strong>${{ d.subtotal }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </div>

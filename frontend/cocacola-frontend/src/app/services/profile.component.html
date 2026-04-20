@@ -2,18 +2,46 @@
 
 <div class="profile-page">
   <div class="profile-container">
-    <div class="profile-header">
-      <span class="profile-badge">TU CUENTA</span>
-      <h1>Editar perfil</h1>
-      <p>Actualiza tu información personal, cambia tu contraseña o elimina tu cuenta.</p>
-    </div>
+    <section class="profile-hero">
+      <div class="hero-copy">
+        <span class="profile-badge">TU CUENTA</span>
+        <h1>Editar perfil</h1>
+        <p>
+          Actualiza tu información personal, administra tu seguridad y mantén tu
+          experiencia dentro de la plataforma Coca-Cola más completa, moderna y ordenada.
+        </p>
+      </div>
 
-    <div *ngIf="loading" class="profile-card">
+      <div class="profile-summary-card" *ngIf="!loading">
+        <div class="avatar">{{ inicial }}</div>
+        <h2>{{ nombreCompleto }}</h2>
+        <p>{{ form.correo || 'Sin correo registrado' }}</p>
+
+        <div class="summary-mini-grid">
+          <div class="mini-box">
+            <span>Cuenta</span>
+            <strong>Activa</strong>
+          </div>
+          <div class="mini-box">
+            <span>Perfil</span>
+            <strong>Actualizable</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div *ngIf="loading" class="profile-card loading-card">
       <p>Cargando perfil...</p>
     </div>
 
-    <div *ngIf="!loading" class="profile-card">
-      <h2>Datos personales</h2>
+    <section *ngIf="!loading" class="profile-card">
+      <div class="card-head">
+        <div>
+          <span class="card-label">Información</span>
+          <h2>Datos personales</h2>
+        </div>
+        <span class="card-status">Editable</span>
+      </div>
 
       <div class="form-grid">
         <div class="form-group">
@@ -56,11 +84,17 @@
         <button class="save-btn" (click)="guardarCambios()">Guardar cambios</button>
       </div>
 
-      <p class="message">{{ message }}</p>
-    </div>
+      <p class="message" *ngIf="message">{{ message }}</p>
+    </section>
 
-    <div *ngIf="!loading" class="profile-card secondary-card">
-      <h2>Cambiar contraseña</h2>
+    <section *ngIf="!loading" class="profile-card secondary-card">
+      <div class="card-head">
+        <div>
+          <span class="card-label">Seguridad</span>
+          <h2>Cambiar contraseña</h2>
+        </div>
+        <span class="card-status">Protección</span>
+      </div>
 
       <div class="form-grid single-column">
         <div class="form-group">
@@ -83,16 +117,25 @@
         <button class="save-btn" (click)="cambiarPassword()">Actualizar contraseña</button>
       </div>
 
-      <p class="message">{{ passwordMessage }}</p>
-    </div>
+      <p class="message" *ngIf="passwordMessage">{{ passwordMessage }}</p>
+    </section>
 
-    <div *ngIf="!loading" class="profile-card danger-card">
-      <h2>Eliminar cuenta</h2>
-      <p>Esta acción eliminará tu cuenta del sistema.</p>
+    <section *ngIf="!loading" class="profile-card danger-card">
+      <div class="card-head">
+        <div>
+          <span class="card-label">Zona sensible</span>
+          <h2>Eliminar cuenta</h2>
+        </div>
+        <span class="card-status danger-status">Permanente</span>
+      </div>
+
+      <p class="danger-text">
+        Esta acción eliminará tu cuenta del sistema y no se podrá deshacer.
+      </p>
 
       <div class="actions">
         <button class="delete-btn" (click)="eliminarCuenta()">Eliminar cuenta</button>
       </div>
-    </div>
+    </section>
   </div>
 </div>

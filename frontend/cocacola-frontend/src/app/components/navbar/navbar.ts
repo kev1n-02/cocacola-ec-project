@@ -14,6 +14,7 @@ export class Navbar {
   userMenuOpen = false;
   catalogMenuOpen = false;
   eventsMenuOpen = false;
+  mobileMenuOpen = false;
 
   constructor(
     private router: Router,
@@ -30,6 +31,15 @@ export class Navbar {
 
   get cartCount(): number {
     return this.cart.count();
+  }
+
+  toggleMobileMenu(event?: Event): void {
+    if (event) event.stopPropagation();
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+
+    if (!this.mobileMenuOpen) {
+      this.closeMenus();
+    }
   }
 
   toggleUserMenu(event?: Event): void {
@@ -59,8 +69,13 @@ export class Navbar {
     this.eventsMenuOpen = false;
   }
 
-  irCategoria(categoria: string): void {
+  closeAllMenus(): void {
     this.closeMenus();
+    this.mobileMenuOpen = false;
+  }
+
+  irCategoria(categoria: string): void {
+    this.closeAllMenus();
     this.router.navigate(['/home'], {
       queryParams: { categoria },
       fragment: 'catalogo'
@@ -68,7 +83,7 @@ export class Navbar {
   }
 
   irPromociones(): void {
-    this.closeMenus();
+    this.closeAllMenus();
     this.router.navigate(['/home'], {
       queryParams: { promociones: 'true' },
       fragment: 'catalogo'
@@ -76,7 +91,7 @@ export class Navbar {
   }
 
   irEvento(evento: string): void {
-    this.closeMenus();
+    this.closeAllMenus();
     this.router.navigate(['/home'], {
       queryParams: { evento },
       fragment: 'eventos'
@@ -87,7 +102,7 @@ export class Navbar {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
     localStorage.removeItem('token');
-    this.closeMenus();
+    this.closeAllMenus();
     this.router.navigate(['/login']);
   }
 
@@ -96,7 +111,7 @@ export class Navbar {
     const target = event.target as HTMLElement;
 
     if (!target.closest('.private-header')) {
-      this.closeMenus();
+      this.closeAllMenus();
     }
   }
 }

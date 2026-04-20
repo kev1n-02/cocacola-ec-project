@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../pages/cart/cart.service';
 import { OrderService } from '../../services/order.service';
@@ -9,7 +9,7 @@ import { Navbar } from '../../components/navbar/navbar';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule, Navbar],
+  imports: [CommonModule, FormsModule, RouterModule, Navbar],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })

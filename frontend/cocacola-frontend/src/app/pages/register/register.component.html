@@ -2,31 +2,73 @@
   <div class="auth-card register-card">
 
     <div class="brand">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" alt="Coca-Cola">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" alt="Coca-Cola">
     </div>
 
     <h2>Crear Cuenta</h2>
     <p class="subtitle">Completa tus datos para registrarte</p>
 
+    <p class="msg" *ngIf="message">{{ message }}</p>
+
     <div class="grid">
-      <input [(ngModel)]="nombre" placeholder="Nombre">
-      <input [(ngModel)]="apellido" placeholder="Apellido">
+      <input
+        [(ngModel)]="nombre"
+        placeholder="Nombre"
+        [class.error]="message.toLowerCase().includes('nombre') || message.toLowerCase().includes('nombres')"
+      >
 
-      <input [(ngModel)]="fecha_nacimiento" type="date">
-      <input [(ngModel)]="nacionalidad" placeholder="Nacionalidad">
+      <input
+        [(ngModel)]="apellido"
+        placeholder="Apellido"
+        [class.error]="message.toLowerCase().includes('apellido') || message.toLowerCase().includes('apellidos')"
+      >
 
-      <input [(ngModel)]="correo" placeholder="Correo">
-      <input [(ngModel)]="telefono" placeholder="Teléfono">
+      <input
+        [(ngModel)]="fecha_nacimiento"
+        type="date"
+        [class.error]="message.toLowerCase().includes('fecha') || message.toLowerCase().includes('edad')"
+      >
 
-      <input [(ngModel)]="cedula" placeholder="Cédula">
-      <input [(ngModel)]="password" type="password" placeholder="Contraseña">
+      <input
+        [(ngModel)]="nacionalidad"
+        placeholder="Nacionalidad"
+        [class.error]="message.toLowerCase().includes('nacionalidad')"
+      >
 
-      <input class="full" [(ngModel)]="confirm_password" type="password" placeholder="Confirmar contraseña">
+      <input
+        [(ngModel)]="correo"
+        placeholder="Correo"
+        [class.error]="message.toLowerCase().includes('correo')"
+      >
+
+      <input
+        [(ngModel)]="telefono"
+        placeholder="Teléfono"
+      >
+
+      <input
+        [(ngModel)]="cedula"
+        placeholder="Cédula"
+        [class.error]="message.toLowerCase().includes('cédula') || message.toLowerCase().includes('cedula')"
+      >
+
+      <input
+        [(ngModel)]="password"
+        type="password"
+        placeholder="Contraseña"
+        [class.error]="message.toLowerCase().includes('contraseña')"
+      >
+
+      <input
+        class="full"
+        [(ngModel)]="confirm_password"
+        type="password"
+        placeholder="Confirmar contraseña"
+        [class.error]="message.toLowerCase().includes('coinciden')"
+      >
     </div>
 
     <button class="main-btn" (click)="register()">Registrarse</button>
-
-    <p class="msg">{{ message }}</p>
 
     <div class="links">
       <a routerLink="/login">Ir a login</a>

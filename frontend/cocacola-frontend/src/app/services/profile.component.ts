@@ -74,6 +74,15 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  get inicial(): string {
+    const nombreCompleto = `${this.form.nombre} ${this.form.apellido}`.trim();
+    return nombreCompleto ? nombreCompleto.charAt(0).toUpperCase() : 'U';
+  }
+
+  get nombreCompleto(): string {
+    return `${this.form.nombre} ${this.form.apellido}`.trim() || 'Usuario';
+  }
+
   guardarCambios(): void {
     const rawUser = localStorage.getItem('user');
     const user = rawUser ? JSON.parse(rawUser) : null;
@@ -151,6 +160,7 @@ export class ProfileComponent implements OnInit {
       next: () => {
         localStorage.removeItem('user');
         localStorage.removeItem('cart');
+        localStorage.removeItem('token');
         this.router.navigate(['/register']);
       },
       error: (err: any) => {

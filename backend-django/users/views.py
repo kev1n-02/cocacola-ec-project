@@ -18,13 +18,19 @@ DESCRIPCIÓN DE LA MODIFICACIÓN:
 ===========================================================
 """
 from decimal import Decimal
+from datetime import date
+import re
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.db import transaction
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 from .models import Producto, Perfil, Pedido, DetallePedido, Categoria
 from .serializers import (
@@ -35,79 +41,211 @@ from .serializers import (
 )
 
 
+# =========================
+# VALIDACIONES AUXILIARES
+# =========================
+
+def validar_solo_letras(valor: str) -> bool:
+    patron = r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$'
+    return bool(re.fullmatch(patron, valor.strip()))
+
+
+def validar_password_segura(password: str) -> bool:
+    """
+    Mínimo 6 caracteres, al menos:
+    - una minúscula
+    - una mayúscula
+    - un número
+    - un carácter especial
+    """
+    patron = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@._\-#$%&*!])[A-Za-z\d@._\-#$%&*!]{6,}$'
+    return bool(re.fullmatch(patron, password))
+
+
+def validar_mayoria_edad(fecha_nacimiento) -> bool:
+    hoy = date.today()
+    edad = hoy.year - fecha_nacimiento.year - (
+        (hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day)
+    )
+    return edad >= 18
+
+
+def validar_cedula_ecuatoriana(cedula: str) -> bool:
+    if not cedula.isdigit():
+        return False
+
+    if len(cedula) != 10:
+        return False
+
+    provincia = int(cedula[:2])
+    tercer_digito = int(cedula[2])
+
+    if provincia < 1 or provincia > 24:
+        return False
+
+    if tercer_digito >= 6:
+        return False
+
+    coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2]
+    suma = 0
+
+    for i in range(9):
+        valor = int(cedula[i]) * coeficientes[i]
+        if valor > 9:
+            valor -= 9
+        suma += valor
+
+    verificador = (10 - (suma % 10)) % 10
+
+    return verificador == int(cedula[9])
+
+
+# =========================
+# AUTENTICACIÓN
+# =========================
+
 @api_view(['POST'])
 def register_user(request):
     data = request.data
 
-    nombre = data.get('nombre')
-    apellido = data.get('apellido')
+    nombre = (data.get('nombre') or '').strip()
+    apellido = (data.get('apellido') or '').strip()
     fecha_nacimiento = data.get('fecha_nacimiento')
-    nacionalidad = data.get('nacionalidad')
-    correo = data.get('correo')
-    telefono = data.get('telefono')
-    cedula = data.get('cedula')
-    password = data.get('password')
-    confirm_password = data.get('confirm_password')
+    nacionalidad = (data.get('nacionalidad') or '').strip()
+    correo = (data.get('correo') or '').strip()
+    telefono = (data.get('telefono') or '').strip()
+    cedula = (data.get('cedula') or '').strip()
+    password = data.get('password') or ''
+    confirm_password = data.get('confirm_password') or ''
 
-    if not correo or not password:
-        return Response(
-            {'error': 'Correo y contraseña son obligatorios'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    # CAMPOS OBLIGATORIOS
+    if not nombre:
+        return Response({'error': 'Los nombres son obligatorios'}, status=400)
 
+    if not apellido:
+        return Response({'error': 'Los apellidos son obligatorios'}, status=400)
+
+    if not fecha_nacimiento:
+        return Response({'error': 'La fecha de nacimiento es obligatoria'}, status=400)
+
+    if not nacionalidad:
+        return Response({'error': 'La nacionalidad es obligatoria'}, status=400)
+
+    if not correo:
+        return Response({'error': 'El correo es obligatorio'}, status=400)
+
+    if not cedula:
+        return Response({'error': 'La cédula es obligatoria'}, status=400)
+
+    if not password or not confirm_password:
+        return Response({'error': 'La contraseña y su confirmación son obligatorias'}, status=400)
+
+    # VALIDACIÓN DE NOMBRE / APELLIDO / NACIONALIDAD
+    if not validar_solo_letras(nombre):
+        return Response({'error': 'Los nombres solo deben contener letras'}, status=400)
+
+    if not validar_solo_letras(apellido):
+        return Response({'error': 'Los apellidos solo deben contener letras'}, status=400)
+
+    if not validar_solo_letras(nacionalidad):
+        return Response({'error': 'La nacionalidad solo debe contener letras'}, status=400)
+
+    # VALIDACIÓN DE CORREO
+    try:
+        validate_email(correo)
+    except ValidationError:
+        return Response({'error': 'El correo electrónico no es válido'}, status=400)
+
+    # VALIDACIÓN DE CÉDULA
+    if not cedula.isdigit():
+        return Response({'error': 'La cédula solo debe contener números'}, status=400)
+
+    if not validar_cedula_ecuatoriana(cedula):
+        return Response({'error': 'La cédula ecuatoriana no es válida'}, status=400)
+
+    # VALIDACIÓN DE CONTRASEÑA
     if password != confirm_password:
+        return Response({'error': 'Las contraseñas no coinciden'}, status=400)
+
+    if not validar_password_segura(password):
         return Response(
-            {'error': 'Las contraseñas no coinciden'},
-            status=status.HTTP_400_BAD_REQUEST
+            {
+                'error': 'La contraseña debe tener mínimo 6 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial'
+            },
+            status=400
         )
 
+    # VALIDACIÓN DE FECHA Y MAYORÍA DE EDAD
+    try:
+        fecha_obj = date.fromisoformat(fecha_nacimiento)
+    except ValueError:
+        return Response({'error': 'La fecha de nacimiento no es válida'}, status=400)
+
+    if not validar_mayoria_edad(fecha_obj):
+        return Response({'error': 'Debes ser mayor de edad para registrarte'}, status=400)
+
+    # VALIDACIÓN DE DUPLICADOS
     if User.objects.filter(username=correo).exists():
-        return Response(
-            {'error': 'El correo ya está registrado'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response({'error': 'El correo ya está registrado'}, status=400)
 
+    if Perfil.objects.filter(cedula=cedula).exists():
+        return Response({'error': 'La cédula ya está registrada'}, status=400)
+
+    # CREACIÓN DE USUARIO
     user = User.objects.create_user(
         username=correo,
         email=correo,
         password=password,
-        first_name=nombre or '',
-        last_name=apellido or ''
+        first_name=nombre,
+        last_name=apellido
     )
 
     Perfil.objects.create(
         user=user,
-        nombre=nombre or '',
-        apellido=apellido or '',
-        fecha_nacimiento=fecha_nacimiento,
-        nacionalidad=nacionalidad or '',
-        telefono=telefono or '',
-        cedula=cedula or ''
+        nombre=nombre,
+        apellido=apellido,
+        fecha_nacimiento=fecha_obj,
+        nacionalidad=nacionalidad,
+        telefono=telefono,
+        cedula=cedula
     )
 
+    token, _ = Token.objects.get_or_create(user=user)
+
     return Response(
-        {'message': 'Usuario registrado correctamente'},
+        {
+            'message': 'Usuario registrado correctamente',
+            'token': token.key
+        },
         status=status.HTTP_201_CREATED
     )
 
 
 @api_view(['POST'])
 def login_user(request):
-    correo = request.data.get('username') or request.data.get('correo')
-    password = request.data.get('password')
+    correo = (request.data.get('username') or request.data.get('correo') or '').strip()
+    password = request.data.get('password') or ''
 
-    if not correo or not password:
-        return Response(
-            {'error': 'Correo y contraseña son obligatorios'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    if not correo:
+        return Response({'error': 'Debes ingresar el correo'}, status=400)
+
+    try:
+        validate_email(correo)
+    except ValidationError:
+        return Response({'error': 'El correo electrónico no es válido'}, status=400)
+
+    if not password:
+        return Response({'error': 'Debes ingresar la contraseña'}, status=400)
 
     user = authenticate(username=correo, password=password)
 
     if user is not None:
+        token, _ = Token.objects.get_or_create(user=user)
+
         return Response(
             {
                 'message': 'Login exitoso',
+                'token': token.key,
                 'user': {
                     'id': user.id,
                     'correo': user.email,
@@ -123,6 +261,10 @@ def login_user(request):
         status=status.HTTP_401_UNAUTHORIZED
     )
 
+
+# =========================
+# PRODUCTOS Y CATEGORÍAS
+# =========================
 
 @api_view(['GET'])
 def obtener_categorias(request):
@@ -156,6 +298,10 @@ def obtener_productos(request):
     return Response(serializer.data)
 
 
+# =========================
+# PERFIL
+# =========================
+
 @api_view(['POST'])
 def get_profile(request):
     user_id = request.data.get('user_id')
@@ -182,23 +328,59 @@ def update_profile(request):
         perfil = Perfil.objects.get(user_id=user_id)
         user = perfil.user
 
-        perfil.nombre = request.data.get('nombre', perfil.nombre)
-        perfil.apellido = request.data.get('apellido', perfil.apellido)
-        perfil.fecha_nacimiento = request.data.get('fecha_nacimiento', perfil.fecha_nacimiento)
-        perfil.nacionalidad = request.data.get('nacionalidad', perfil.nacionalidad)
-        perfil.telefono = request.data.get('telefono', perfil.telefono)
-        perfil.cedula = request.data.get('cedula', perfil.cedula)
+        nombre = request.data.get('nombre', perfil.nombre).strip()
+        apellido = request.data.get('apellido', perfil.apellido).strip()
+        fecha_nacimiento = request.data.get('fecha_nacimiento', perfil.fecha_nacimiento)
+        nacionalidad = request.data.get('nacionalidad', perfil.nacionalidad).strip()
+        telefono = request.data.get('telefono', perfil.telefono).strip()
+        cedula = request.data.get('cedula', perfil.cedula).strip()
+        nuevo_correo = (request.data.get('correo') or user.email).strip()
 
-        nuevo_correo = request.data.get('correo')
-        if nuevo_correo:
-            if User.objects.exclude(id=user.id).filter(username=nuevo_correo).exists():
-                return Response({'error': 'Ese correo ya está en uso'}, status=400)
+        if not validar_solo_letras(nombre):
+            return Response({'error': 'Los nombres solo deben contener letras'}, status=400)
 
-            user.username = nuevo_correo
-            user.email = nuevo_correo
+        if not validar_solo_letras(apellido):
+            return Response({'error': 'Los apellidos solo deben contener letras'}, status=400)
 
-        user.first_name = request.data.get('nombre', user.first_name)
-        user.last_name = request.data.get('apellido', user.last_name)
+        if not validar_solo_letras(nacionalidad):
+            return Response({'error': 'La nacionalidad solo debe contener letras'}, status=400)
+
+        try:
+            validate_email(nuevo_correo)
+        except ValidationError:
+            return Response({'error': 'El correo electrónico no es válido'}, status=400)
+
+        if not cedula.isdigit():
+            return Response({'error': 'La cédula solo debe contener números'}, status=400)
+
+        if not validar_cedula_ecuatoriana(cedula):
+            return Response({'error': 'La cédula ecuatoriana no es válida'}, status=400)
+
+        try:
+            fecha_obj = date.fromisoformat(str(fecha_nacimiento))
+        except ValueError:
+            return Response({'error': 'La fecha de nacimiento no es válida'}, status=400)
+
+        if not validar_mayoria_edad(fecha_obj):
+            return Response({'error': 'Debes ser mayor de edad'}, status=400)
+
+        if User.objects.exclude(id=user.id).filter(username=nuevo_correo).exists():
+            return Response({'error': 'Ese correo ya está en uso'}, status=400)
+
+        if Perfil.objects.exclude(user_id=user.id).filter(cedula=cedula).exists():
+            return Response({'error': 'La cédula ya está registrada'}, status=400)
+
+        perfil.nombre = nombre
+        perfil.apellido = apellido
+        perfil.fecha_nacimiento = fecha_obj
+        perfil.nacionalidad = nacionalidad
+        perfil.telefono = telefono
+        perfil.cedula = cedula
+
+        user.username = nuevo_correo
+        user.email = nuevo_correo
+        user.first_name = nombre
+        user.last_name = apellido
 
         user.save()
         perfil.save()
@@ -211,15 +393,23 @@ def update_profile(request):
 @api_view(['PUT'])
 def change_password(request):
     user_id = request.data.get('user_id')
-    current_password = request.data.get('current_password')
-    new_password = request.data.get('new_password')
-    confirm_password = request.data.get('confirm_password')
+    current_password = request.data.get('current_password') or ''
+    new_password = request.data.get('new_password') or ''
+    confirm_password = request.data.get('confirm_password') or ''
 
     if not user_id or not current_password or not new_password or not confirm_password:
         return Response({'error': 'Todos los campos son obligatorios'}, status=400)
 
     if new_password != confirm_password:
         return Response({'error': 'Las nuevas contraseñas no coinciden'}, status=400)
+
+    if not validar_password_segura(new_password):
+        return Response(
+            {
+                'error': 'La nueva contraseña debe tener mínimo 6 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial'
+            },
+            status=400
+        )
 
     try:
         user = User.objects.get(id=user_id)
@@ -230,7 +420,12 @@ def change_password(request):
         user.set_password(new_password)
         user.save()
 
-        return Response({'message': 'Contraseña actualizada correctamente'})
+        token, _ = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'message': 'Contraseña actualizada correctamente',
+            'token': token.key
+        })
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=404)
 
@@ -250,14 +445,18 @@ def delete_user(request):
         return Response({'error': 'Usuario no encontrado'}, status=404)
 
 
+# =========================
+# PEDIDOS
+# =========================
+
 @api_view(['POST'])
 def create_order(request):
     user_id = request.data.get('user_id')
     items = request.data.get('items', [])
 
-    nombres_facturacion = request.data.get('nombres_facturacion', '')
-    direccion_facturacion = request.data.get('direccion_facturacion', '')
-    cedula_facturacion = request.data.get('cedula_facturacion', '')
+    nombres_facturacion = (request.data.get('nombres_facturacion') or '').strip()
+    direccion_facturacion = (request.data.get('direccion_facturacion') or '').strip()
+    cedula_facturacion = (request.data.get('cedula_facturacion') or '').strip()
 
     if not user_id:
         return Response({'error': 'user_id es obligatorio'}, status=400)
@@ -270,6 +469,15 @@ def create_order(request):
             {'error': 'Los datos de facturación son obligatorios'},
             status=400
         )
+
+    if not validar_solo_letras(nombres_facturacion):
+        return Response({'error': 'Los nombres de facturación solo deben contener letras'}, status=400)
+
+    if not cedula_facturacion.isdigit():
+        return Response({'error': 'La cédula de facturación solo debe contener números'}, status=400)
+
+    if not validar_cedula_ecuatoriana(cedula_facturacion):
+        return Response({'error': 'La cédula de facturación no es válida'}, status=400)
 
     try:
         user = User.objects.get(id=user_id)
@@ -294,10 +502,19 @@ def create_order(request):
             producto_id = item.get('producto_id')
             cantidad = int(item.get('cantidad', 1))
 
+            if cantidad <= 0:
+                return Response({'error': 'La cantidad debe ser mayor a cero'}, status=400)
+
             try:
                 producto = Producto.objects.get(id=producto_id, activo=True)
             except Producto.DoesNotExist:
                 return Response({'error': f'Producto {producto_id} no encontrado'}, status=404)
+
+            if producto.stock < cantidad:
+                return Response(
+                    {'error': f'Stock insuficiente para {producto.nombre}'},
+                    status=400
+                )
 
             subtotal_item = Decimal(producto.precio) * cantidad
             subtotal_general += subtotal_item
@@ -309,6 +526,9 @@ def create_order(request):
                 precio=producto.precio,
                 subtotal=subtotal_item
             )
+
+            producto.stock -= cantidad
+            producto.save()
 
         iva = subtotal_general * Decimal('0.15')
         total = subtotal_general + iva

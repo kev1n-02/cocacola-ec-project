@@ -1,24 +1,78 @@
 <div class="auth-page">
-  <div class="auth-card">
+  <div class="auth-shell">
+    <section class="auth-hero">
+      <div class="hero-badge">Coca-Cola Experience</div>
 
-    <div class="brand">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" alt="Coca-Cola">
-    </div>
+      <h1>
+        Bienvenido de nuevo a tu
+        <span>experiencia digital</span>
+      </h1>
 
-    <h2>Iniciar Sesión</h2>
-    <p class="subtitle">Bienvenido de nuevo</p>
+      <p>
+        Accede a tu cuenta para explorar productos, gestionar tu carrito,
+        revisar pedidos y vivir una experiencia más moderna dentro de la
+        plataforma Coca-Cola.
+      </p>
 
-    <input [(ngModel)]="username" placeholder="Correo">
-    <input [(ngModel)]="password" type="password" placeholder="Contraseña">
+      <div class="hero-points">
+        <div class="point-card">
+          <strong>Catálogo</strong>
+          <span>Explora bebidas y promociones</span>
+        </div>
 
-    <button class="main-btn" (click)="login()">Entrar</button>
+        <div class="point-card">
+          <strong>Pedidos</strong>
+          <span>Consulta tu historial de compras</span>
+        </div>
 
-    <p class="msg">{{ message }}</p>
+        <div class="point-card">
+          <strong>Acceso</strong>
+          <span>Seguro, rápido y responsivo</span>
+        </div>
+      </div>
+    </section>
 
-    <div class="links">
-      <a routerLink="/register">Crear cuenta</a>
-      <a routerLink="/">Volver</a>
-    </div>
+    <section class="auth-card">
+      <div class="brand">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg"
+          alt="Coca-Cola"
+        >
+      </div>
 
+      <div class="form-header">
+        <h2>Iniciar sesión</h2>
+        <p class="subtitle">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <p class="msg" *ngIf="message">{{ message }}</p>
+
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input
+          [(ngModel)]="username"
+          type="email"
+          placeholder="ejemplo@correo.com"
+          [class.error]="message.toLowerCase().includes('correo')"
+        >
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <input
+          [(ngModel)]="password"
+          type="password"
+          placeholder="Ingresa tu contraseña"
+          [class.error]="message.toLowerCase().includes('contraseña') || message.toLowerCase().includes('credenciales')"
+        >
+      </div>
+
+      <button class="main-btn" (click)="login()">Ingresar</button>
+
+      <div class="links">
+        <a routerLink="/register">Crear cuenta</a>
+        <a routerLink="/">Volver</a>
+      </div>
+    </section>
   </div>
 </div>
